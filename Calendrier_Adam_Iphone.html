@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Alternance">
+<meta name="theme-color" media="(prefers-color-scheme:light)" content="#F2F2F7">
+<meta name="theme-color" media="(prefers-color-scheme:dark)" content="#000000">
+<title>Alternance GEII2 · AII</title>
+<style>
+/* ============ DESIGN SYSTEM iOS ============ */
+:root{
+  --bg:#F2F2F7; --bg2:#FFFFFF; --bg3:#FFFFFF; --sep:rgba(60,60,67,.14);
+  --txt:#000; --txt2:rgba(60,60,67,.6); --txt3:rgba(60,60,67,.3);
+  --blue:#007AFF; --green:#34C759; --pink:#FF2D55; --orange:#FF9500; --gray:#8E8E93;
+  --green-s:rgba(52,199,89,.14); --pink-s:rgba(255,45,85,.12); --orange-s:rgba(255,149,0,.14);
+  --blur:saturate(180%) blur(20px); --r:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#000; --bg2:#1C1C1E; --bg3:#2C2C2E; --sep:rgba(84,84,88,.5);
+    --txt:#fff; --txt2:rgba(235,235,245,.6); --txt3:rgba(235,235,245,.3);
+    --blue:#0A84FF; --green:#30D158; --pink:#FF375F; --orange:#FF9F0A;
+    --green-s:rgba(48,209,88,.18); --pink-s:rgba(255,55,95,.16); --orange-s:rgba(255,159,10,.18);}
+}
+html[data-force="light"]{color-scheme:light}
+html[data-force="dark"]{color-scheme:dark;--bg:#000;--bg2:#1C1C1E;--bg3:#2C2C2E;--sep:rgba(84,84,88,.5);
+  --txt:#fff;--txt2:rgba(235,235,245,.6);--txt3:rgba(235,235,245,.3);--blue:#0A84FF;--green:#30D158;
+  --pink:#FF375F;--orange:#FF9F0A;--green-s:rgba(48,209,88,.18);--pink-s:rgba(255,55,95,.16);--orange-s:rgba(255,159,10,.18)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--txt);overscroll-behavior-y:none;
+  font:17px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+
+/* ============ NAV BAR ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;padding-top:env(safe-area-inset-top);
+  background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-bottom:.5px solid transparent;transition:border-color .2s}
+.nav.scrolled{border-color:var(--sep)}
+.nav-in{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.nav-t{font-size:17px;font-weight:600;opacity:0;transition:.2s}
+.nav.scrolled .nav-t{opacity:1}
+.nav-b{width:34px;height:34px;border-radius:50%;background:var(--bg3);display:grid;place-items:center;font-size:15px}
+.nav-b:active{transform:scale(.9)}
+.big{padding:4px 16px 8px;font-size:34px;font-weight:700;letter-spacing:-.6px;line-height:1.1}
+.big small{display:block;font-size:14px;font-weight:500;color:var(--txt2);letter-spacing:0;margin-top:2px}
+
+/* ============ SCROLL / VIEWS ============ */
+main{padding-top:calc(env(safe-area-inset-top) + 44px);
+  padding-bottom:calc(env(safe-area-inset-bottom) + 68px);min-height:100dvh}
+.view{display:none;animation:in .25s ease}
+.view.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sec{margin:22px 16px 8px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2)}
+
+/* ============ CARTES ============ */
+.card{background:var(--bg2);border-radius:var(--r);margin:0 16px 12px;overflow:hidden}
+.hero{margin:6px 16px 14px;border-radius:22px;padding:20px;color:#fff;position:relative;overflow:hidden;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45)}
+.hero.iut{background:linear-gradient(145deg,#34C759,#1E8E3E)}
+.hero.ent{background:linear-gradient(145deg,#FF375F,#C2185B)}
+.hero::after{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;
+  border-radius:50%;background:rgba(255,255,255,.14)}
+.hero .lbl{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;opacity:.85}
+.hero .big2{font-size:32px;font-weight:700;letter-spacing:-.5px;margin:4px 0 2px}
+.hero .dts{font-size:15px;opacity:.9}
+.hero .chipz{display:flex;gap:6px;margin-top:16px;position:relative;z-index:1}
+.hero .c7{flex:1;text-align:center;padding:7px 0;border-radius:11px;background:rgba(255,255,255,.18);
+  font-size:11px;font-weight:600}
+.hero .c7 b{display:block;font-size:15px;font-weight:700;margin-top:1px}
+.hero .c7.we{background:rgba(255,255,255,.08);opacity:.65}
+.hero .c7.now{background:#fff;color:#111}
+.hero .c7.fe{background:rgba(255,214,0,.85);color:#3a2c00}
+
+.rowi{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:.5px solid var(--sep);min-height:52px}
+.rowi:last-child{border-bottom:0}
+.rowi:active{background:var(--bg3)}
+.ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;flex:none;color:#fff}
+.ico.g{background:var(--green)}.ico.p{background:var(--pink)}.ico.b{background:var(--blue)}
+.ico.o{background:var(--orange)}.ico.s{background:var(--gray)}
+.rowi .t{flex:1;min-width:0}
+.rowi .t b{font-weight:400;font-size:17px;display:block}
+.rowi .t small{color:var(--txt2);font-size:13px}
+.rowi .v{color:var(--txt2);font-size:16px;font-variant-numeric:tabular-nums}
+.rowi .ch{color:var(--txt3);font-size:18px;flex:none}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 16px 12px}
+.kpi{background:var(--bg2);border-radius:var(--r);padding:14px}
+.kpi .k{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--txt2)}
+.kpi .v{font-size:27px;font-weight:700;letter-spacing:-.5px;margin-top:3px}
+.kpi .v small{font-size:13px;font-weight:500;color:var(--txt2)}
+.ring{display:flex;align-items:center;gap:14px;padding:16px}
+.ring svg{flex:none}
+.ring .rt b{font-size:22px;font-weight:700;display:block}
+.ring .rt small{color:var(--txt2);font-size:13px}
+
+/* ============ FRISE ============ */
+.grid54{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;padding:14px}
+.gc{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:600;position:relative}
+.gc:active{transform:scale(.88)}
+.gc.iut{background:var(--green-s);color:var(--green)}
+.gc.ent{background:var(--pink-s);color:var(--pink)}
+.gc.now{outline:2px solid var(--blue);outline-offset:1px}
+.gc.ev::after{content:"";position:absolute;bottom:3px;width:3px;height:3px;border-radius:50%;background:currentColor}
+
+/* ============ SEGMENTED + CHIPS ============ */
+.segw{margin:0 16px 14px}
+.seg{display:flex;background:var(--bg3);border-radius:10px;padding:2px;position:relative}
+.seg button{flex:1;padding:7px 0;font-size:14px;font-weight:600;border-radius:8px;color:var(--txt2);transition:.18s}
+.seg button.on{background:var(--bg2);color:var(--txt);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+html[data-force="dark"] .seg button.on,@media(prefers-color-scheme:dark){.seg button.on{background:#636366}}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 14px;border-radius:999px;background:var(--bg2);font-size:14px;font-weight:500;white-space:nowrap}
+.chip.on{background:var(--blue);color:#fff}
+.srch{margin:0 16px 12px;display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:10px;padding:8px 12px}
+.srch input{flex:1;border:0;background:none;outline:0;font-size:17px;color:var(--txt)}
+
+/* ============ LISTE SEMAINES ============ */
+.mh{position:sticky;top:calc(env(safe-area-inset-top) + 44px);z-index:20;padding:7px 16px;
+  font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.wl{background:var(--bg2);margin:0 16px 10px;border-radius:var(--r);overflow:hidden}
+.wr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid var(--sep);position:relative}
+.wr:last-child{border-bottom:0}
+.wr:active{background:var(--bg3)}
+.wr .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+.wr.iut .bar{background:var(--green)}.wr.ent .bar{background:var(--pink)}
+.wr .num{width:42px;flex:none;text-align:center}
+.wr .num b{display:block;font-size:19px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.wr .num small{font-size:10px;color:var(--txt2);text-transform:uppercase}
+.wr .mid{flex:1;min-width:0}
+.wr .mid b{font-size:16px;font-weight:500;display:block}
+.wr .mid small{font-size:13px;color:var(--txt2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pil{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;flex:none}
+.pil.iut{background:var(--green-s);color:var(--green)}
+.pil.ent{background:var(--pink-s);color:var(--pink)}
+.wr.today{background:color-mix(in srgb,var(--blue) 10%,transparent)}
+.wr.today .mid b::after{content:"AUJOURD'HUI";font-size:9px;font-weight:800;background:var(--blue);color:#fff;
+  padding:2px 5px;border-radius:5px;margin-left:6px;vertical-align:1px;letter-spacing:.4px}
+
+/* ============ BOTTOM SHEET ============ */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;opacity:0;pointer-events:none;transition:.25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--bg);border-radius:14px 14px 0 0;
+  max-height:92dvh;display:flex;flex-direction:column;transform:translateY(102%);
+  transition:transform .34s cubic-bezier(.32,.72,0,1);padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -8px 40px rgba(0,0,0,.3)}
+.sheet.on{transform:none}
+.sheet.drag{transition:none}
+.grab{padding:8px 0 2px;display:grid;place-items:center;touch-action:none}
+.grab i{width:38px;height:5px;border-radius:3px;background:var(--txt3);display:block}
+.sh-head{display:flex;align-items:center;gap:10px;padding:6px 16px 12px;border-bottom:.5px solid var(--sep)}
+.sh-head h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.3px}
+.sh-head .sb{font-size:13px;color:var(--txt2);margin-top:1px}
+.nb{width:32px;height:32px;border-radius:50%;background:var(--bg3);display:grid;place-items:center;font-size:15px;flex:none}
+.nb:disabled{opacity:.3}
+.nb:active{transform:scale(.9)}
+.sh-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 0 18px;touch-action:pan-y}
+.sumr{display:flex;gap:8px;overflow-x:auto;padding:0 16px 14px;scrollbar-width:none}
+.sumr::-webkit-scrollbar{display:none}
+.sbox{flex:none;background:var(--bg2);border-radius:12px;padding:10px 13px;min-width:92px}
+.sbox small{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:.3px}
+.sbox b{display:block;font-size:17px;font-weight:600;margin-top:2px}
+.dlist{background:var(--bg2);margin:0 16px;border-radius:var(--r);overflow:hidden}
+.dr{display:flex;align-items:center;gap:13px;padding:12px 14px;border-bottom:.5px solid var(--sep)}
+.dr:last-child{border-bottom:0}
+.dr .dn{width:50px;flex:none;text-align:center}
+.dr .dn small{display:block;font-size:11px;font-weight:600;text-transform:uppercase;color:var(--txt2)}
+.dr .dn b{display:block;font-size:22px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
+.dr .di{flex:1;min-width:0}
+.dr .di b{font-size:16px;font-weight:500;display:block}
+.dr .di small{font-size:13px;color:var(--txt2)}
+.dr .ev{display:inline-block;font-size:12px;font-weight:600;background:var(--orange-s);color:var(--orange);
+  padding:3px 8px;border-radius:7px;margin-top:4px}
+.dr.iut{background:var(--green-s)} .dr.ent{background:var(--pink-s)}
+.dr.we{opacity:.55} .dr.fe{background:var(--orange-s)}
+.dr.now{box-shadow:inset 3px 0 0 var(--blue)}
+.acts{display:flex;gap:10px;padding:16px}
+.act{flex:1;background:var(--bg2);border-radius:12px;padding:13px;text-align:center;font-size:14px;font-weight:600}
+.act.pri{background:var(--blue);color:#fff}
+.act:active{opacity:.6}
+.swipehint{text-align:center;font-size:12px;color:var(--txt3);padding:2px 0 10px}
+
+/* ============ TAB BAR ============ */
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;
+  padding-bottom:env(safe-area-inset-bottom);border-top:.5px solid var(--sep);
+  background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.tab{flex:1;padding:7px 0 5px;text-align:center;color:var(--txt2);transition:.15s}
+.tab .i{font-size:22px;line-height:1.1}
+.tab .l{font-size:10px;font-weight:600;letter-spacing:.1px}
+.tab.on{color:var(--blue)}
+.tab:active{opacity:.5}
+.foot{text-align:center;font-size:12px;color:var(--txt3);padding:18px 30px 6px;line-height:1.5}
+.toast{position:fixed;left:50%;transform:translate(-50%,20px);bottom:calc(env(safe-area-inset-bottom) + 78px);
+  background:rgba(30,30,32,.95);color:#fff;padding:11px 18px;border-radius:14px;font-size:14px;font-weight:500;
+  z-index:80;opacity:0;pointer-events:none;transition:.25s;backdrop-filter:blur(10px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<div class="nav" id="nav"><div class="nav-in">
+  <div class="nav-t" id="navT">Alternance</div>
+  <button class="nav-b" id="themeB">🌙</button>
+</div></div>
+
+<main>
+  <!-- ============ VUE 1 : AUJOURD'HUI ============ -->
+  <section class="view on" id="v-now">
+    <div class="big">Aujourd'hui<small id="todayStr"></small></div>
+    <div id="hero"></div>
+    <div class="duo" id="kpis"></div>
+    <div class="sec">Progression</div>
+    <div class="card"><div class="ring" id="ring"></div></div>
+    <div class="sec">À venir</div>
+    <div class="card" id="upcoming"></div>
+  </section>
+
+  <!-- ============ VUE 2 : CALENDRIER ============ -->
+  <section class="view" id="v-cal">
+    <div class="big">Calendrier<small>54 semaines · parcours <span id="trkLbl">AII</span></small></div>
+    <div class="card"><div class="grid54" id="grid"></div></div>
+    <div class="srch"><span>🔍</span><input id="q" placeholder="Rechercher une semaine, un mois…" enterkeyhint="search"></div>
+    <div class="chips" id="chips">
+      <button class="chip on" data-f="all">Tout</button>
+      <button class="chip" data-f="iut">🎓 IUT</button>
+      <button class="chip" data-f="ent">🏢 Entreprise</button>
+      <button class="chip" data-f="ev">⭐ Événements</button>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <!-- ============ VUE 3 : PLUS ============ -->
+  <section class="view" id="v-more">
+    <div class="big">Réglages<small>Calendrier GEII2 2026‑2027</small></div>
+    <div class="sec">Mon parcours</div>
+    <div class="segw"><div class="seg">
+      <button class="on" data-track="aii">BUT3 · AII</button>
+      <button data-track="but2">BUT2</button>
+    </div></div>
+    <div class="sec">Apparence</div>
+    <div class="segw"><div class="seg">
+      <button class="on" data-th="auto">Auto</button><button data-th="light">Clair</button><button data-th="dark">Sombre</button>
+    </div></div>
+    <div class="sec">Exporter</div>
+    <div class="card">
+      <div class="rowi" id="doIcs"><div class="ico b">📆</div><div class="t"><b>Ajouter à Calendrier iOS</b><small>Fichier .ics de l'année</small></div><div class="ch">›</div></div>
+      <div class="rowi" id="doPdfP"><div class="ico s">📄</div><div class="t"><b>PDF A4 portrait</b><small>Vue compacte 2 colonnes</small></div><div class="ch">›</div></div>
+      <div class="rowi" id="doPdfL"><div class="ico s">📄</div><div class="t"><b>PDF A4 paysage</b><small>Vue aérée 3 colonnes</small></div><div class="ch">›</div></div>
+    </div>
+    <div class="sec">Astuce</div>
+    <div class="card"><div class="rowi"><div class="ico o">📲</div><div class="t"><b>Installer l'app</b>
+      <small>Safari → Partager → « Sur l'écran d'accueil »</small></div></div></div>
+    <div class="foot">Les colonnes <b>ESE</b> et <b>EME</b> ont été retirées.<br>Données issues du calendrier officiel GEII2 2026‑2027.</div>
+  </section>
+</main>
+
+<!-- ============ SHEET SEMAINE ============ -->
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet">
+  <div class="grab" id="grab"><i></i></div>
+  <div class="sh-head">
+    <div style="flex:1"><h2 id="shT">Semaine</h2><div class="sb" id="shS"></div></div>
+    <button class="nb" id="prevB">‹</button><button class="nb" id="nextB">›</button>
+  </div>
+  <div class="sh-body" id="shBody">
+    <div class="sumr" id="shSum"></div>
+    <div class="dlist" id="shDays"></div>
+    <div class="swipehint">← glissez pour changer de semaine →</div>
+    <div class="acts">
+      <button class="act" id="shIcs">📆 Agenda</button>
+      <button class="act pri" id="shPdf">📄 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-v="v-now"><div class="i">📍</div><div class="l">Aujourd'hui</div></button>
+  <button class="tab" data-v="v-cal"><div class="i">🗓️</div><div class="l">Calendrier</div></button>
+  <button class="tab" data-v="v-more"><div class="i">⚙️</div><div class="l">Réglages</div></button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DONNÉES ================= */
+const D=(n,s,b2,aii,ev)=>({n,start:s,but2:b2,aii,ev:ev||[]});
+const F=(d,l)=>({d,l,t:'ferie'}), E=(d,l,o)=>({d,l,t:'ecole',only:o});
+const WEEKS=[
+ D(35,"2026-08-24",null,null),D(36,"2026-08-31",1,null),
+ D(37,"2026-09-07",2,1,[E("2026-09-07","Rentrée AII","aii")]),
+ D(38,"2026-09-14",3,2),D(39,"2026-09-21",4,null),D(40,"2026-09-28",5,null),
+ D(41,"2026-10-05",6,3),D(42,"2026-10-12",7,4),D(43,"2026-10-19",null,null),
+ D(44,"2026-10-26",null,null),D(45,"2026-11-02",8,null),
+ D(46,"2026-11-09",9,null,[F("2026-11-11","Armistice")]),
+ D(47,"2026-11-16",null,5),D(48,"2026-11-23",null,6),D(49,"2026-11-30",null,7),
+ D(50,"2026-12-07",10,null),D(51,"2026-12-14",11,null),
+ D(52,"2026-12-21",null,null,[F("2026-12-25","Noël")]),
+ D(1,"2026-12-28",null,null,[F("2027-01-01","Jour de l'An")]),
+ D(2,"2027-01-04",null,null),D(3,"2027-01-11",null,8),D(4,"2027-01-18",null,9),
+ D(5,"2027-01-25",12,null),D(6,"2027-02-01",13,null),D(7,"2027-02-08",null,null),
+ D(8,"2027-02-15",null,null),D(9,"2027-02-22",null,null),D(10,"2027-03-01",14,null),
+ D(11,"2027-03-08",15,null),D(12,"2027-03-15",16,null),D(13,"2027-03-22",17,null),
+ D(14,"2027-03-29",null,null,[F("2027-03-29","Lundi de Pâques")]),
+ D(15,"2027-04-05",null,null),D(16,"2027-04-12",null,null),D(17,"2027-04-19",18,null),
+ D(18,"2027-04-26",19,null,[F("2027-05-01","Fête du Travail")]),
+ D(19,"2027-05-03",20,null,[F("2027-05-06","Ascension"),F("2027-05-08","Victoire 1945")]),
+ D(20,"2027-05-10",21,10),D(21,"2027-05-17",null,11,[F("2027-05-17","Lundi de Pentecôte")]),
+ D(22,"2027-05-24",null,12),D(23,"2027-05-31",null,13),D(24,"2027-06-07",null,14),
+ D(25,"2027-06-14",null,15),D(26,"2027-06-21",null,16),
+ D(27,"2027-06-28",null,null,[E("2027-06-28","Soutenances BUT2","but2")]),
+ D(28,"2027-07-05",null,null),D(29,"2027-07-12",null,null,[F("2027-07-14","Fête nationale")]),
+ D(30,"2027-07-19",null,null),D(31,"2027-07-26",null,null),D(32,"2027-08-02",null,null),
+ D(33,"2027-08-09",null,null),D(34,"2027-08-16",null,null),D(35,"2027-08-23",null,null),
+ D(35,"2027-08-30",null,null,[E("2027-08-30","Soutenances BUT3","aii")])
+];
+const DN=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const D3=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+const D1=["L","M","M","J","V","S","D"];
+
+/* ================= OUTILS ================= */
+let track=localStorage.getItem('trk')||'aii', filter='all', query='', mi=-1;
+const dt=i=>new Date(i+'T00:00:00');
+const add=(i,n)=>{const d=dt(i);d.setDate(d.getDate()+n);return d;};
+const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const fmt=(d,o)=>d.toLocaleDateString('fr-FR',o||{day:'numeric',month:'short'});
+const st=w=>w[track]!=null?'iut':'ent';
+const evs=w=>w.ev.filter(e=>!e.only||e.only===track);
+const TODAY=iso(new Date());
+const tap=()=>{if(navigator.vibrate)navigator.vibrate(8)};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');
+  clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('on'),2200);}
+function ci(){const n=Date.now();
+  for(let i=0;i<WEEKS.length;i++){const s=dt(WEEKS[i].start).getTime();
+    const e=i+1<WEEKS.length?dt(WEEKS[i+1].start).getTime():s+6048e5;
+    if(n>=s&&n<e)return i;} return -1;}
+function dayInfo(w,k){
+  const d=add(w.start,k),key=iso(d),ev=evs(w).filter(e=>e.d===key);
+  const fe=ev.find(e=>e.t==='ferie'),we=k>=5;
+  let c,l;
+  if(we){c='we';l=fe?'Férié (week-end)':'Week-end';}
+  else if(fe){c='fe';l='Jour férié';}
+  else if(st(w)==='iut'){c='iut';l='IUT';}
+  else{c='ent';l='Entreprise';}
+  return{d,key,ev,c,l,we,fe};
+}
+
+/* ================= VUE AUJOURD'HUI ================= */
+function renderNow(){
+  const i=ci();
+  document.getElementById('todayStr').textContent=
+    new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const H=document.getElementById('hero');
+  if(i<0){H.innerHTML=`<div class="card" style="margin:0 16px;padding:20px;text-align:center;color:var(--txt2)">Hors année scolaire 2026‑2027</div>`;}
+  else{
+    const w=WEEKS[i],s=st(w);
+    const chips=D1.map((c,k)=>{const f=dayInfo(w,k);
+      return `<div class="c7 ${f.we?'we':''}${f.fe?' fe':''}${f.key===TODAY?' now':''}">${c}<b>${f.d.getDate()}</b></div>`;}).join('');
+    H.innerHTML=`<div class="hero ${s}" data-i="${i}">
+      <div class="lbl">Cette semaine · S${w.n}</div>
+      <div class="big2">${s==='iut'?'🎓 À l\'IUT':'🏢 En entreprise'}</div>
+      <div class="dts">${fmt(dt(w.start),{weekday:'short',day:'numeric',month:'long'})} → ${fmt(add(w.start,6),{weekday:'short',day:'numeric',month:'long'})}${s==='iut'?' · semaine IUT n°'+w[track]:''}</div>
+      <div class="chipz">${chips}</div></div>`;
+    H.firstElementChild.onclick=()=>{tap();openWeek(i)};
+  }
+  // KPI
+  let nx=null,jj=0;
+  if(i>=0){const cs=st(WEEKS[i]);nx=WEEKS.slice(i+1).find(w=>st(w)!==cs);
+    if(nx)jj=Math.ceil((dt(nx.start)-new Date())/864e5);}
+  const iutW=WEEKS.filter(w=>st(w)==='iut');
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="k">Prochain lieu</div><div class="v">${nx?(st(nx)==='iut'?'🎓 IUT':'🏢 Entr.'):'—'}</div>
+      <small style="color:var(--txt2);font-size:13px">${nx?'dans '+jj+' jour'+(jj>1?'s':''):'fin d\'année'}</small></div>
+    <div class="kpi"><div class="k">Semaines IUT</div><div class="v">${iutW.length}</div>
+      <small style="color:var(--txt2);font-size:13px">${WEEKS.length-iutW.length} en entreprise</small></div>`;
+  // Anneau de progression
+  const done=iutW.filter(w=>dt(w.start)<new Date()).length,pct=Math.round(done/iutW.length*100);
+  const R=30,C=2*Math.PI*R;
+  document.getElementById('ring').innerHTML=`
+    <svg width="76" height="76" viewBox="0 0 76 76"><circle cx="38" cy="38" r="${R}" fill="none" stroke="var(--sep)" stroke-width="8"/>
+    <circle cx="38" cy="38" r="${R}" fill="none" stroke="var(--green)" stroke-width="8" stroke-linecap="round"
+      stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}" transform="rotate(-90 38 38)"/>
+    <text x="38" y="43" text-anchor="middle" font-size="17" font-weight="700" fill="var(--txt)">${pct}%</text></svg>
+    <div class="rt"><b>${done} / ${iutW.length} semaines IUT</b><small>effectuées depuis la rentrée</small></div>`;
+  // À venir
+  const up=[];
+  WEEKS.forEach((w,k)=>evs(w).forEach(e=>{if(dt(e.d)>=new Date())up.push({e,k})}));
+  document.getElementById('upcoming').innerHTML=up.slice(0,5).map(({e,k})=>{
+    const j=Math.ceil((dt(e.d)-new Date())/864e5);
+    return `<div class="rowi" data-i="${k}"><div class="ico ${e.t==='ferie'?'o':'b'}">${e.t==='ferie'?'🎈':'📌'}</div>
+      <div class="t"><b>${e.l}</b><small>${fmt(dt(e.d),{weekday:'long',day:'numeric',month:'long'})}</small></div>
+      <div class="v">J‑${j}</div><div class="ch">›</div></div>`;}).join('')
+    ||`<div class="rowi"><div class="t"><small>Aucun événement à venir</small></div></div>`;
+  document.getElementById('upcoming').querySelectorAll('[data-i]').forEach(r=>r.onclick=()=>{tap();openWeek(+r.dataset.i)});
+}
+
+/* ================= VUE CALENDRIER ================= */
+function match(w){
+  const s=st(w);
+  if(filter==='iut'&&s!=='iut')return false;
+  if(filter==='ent'&&s!=='ent')return false;
+  if(filter==='ev'&&!evs(w).length)return false;
+  if(!query)return true;
+  return ('s'+w.n+' '+fmt(dt(w.start),{day:'numeric',month:'long',year:'numeric'})+' '+
+    (s==='iut'?'iut ecole':'entreprise')+' '+evs(w).map(e=>e.l).join(' ')).toLowerCase().includes(query.toLowerCase());
+}
+function renderCal(){
+  const cur=ci();
+  document.getElementById('trkLbl').textContent=track==='aii'?'AII':'BUT2';
+  document.getElementById('grid').innerHTML=WEEKS.map((w,i)=>
+    `<div class="gc ${st(w)}${i===cur?' now':''}${evs(w).length?' ev':''}" data-i="${i}">${w.n}</div>`).join('');
+  let h='',m='';
+  WEEKS.forEach((w,i)=>{
+    if(!match(w))return;
+    const mm=dt(w.start).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    if(mm!==m){if(m)h+='</div>';m=mm;h+=`<div class="mh">${mm}</div><div class="wl">`;}
+    const s=st(w),ev=evs(w).map(e=>e.l).join(' · ');
+    h+=`<div class="wr ${s}${i===cur?' today':''}" data-i="${i}"><div class="bar"></div>
+      <div class="num"><b>${w.n}</b><small>sem.</small></div>
+      <div class="mid"><b>${fmt(dt(w.start))} – ${fmt(add(w.start,6))}</b>
+        <small>${s==='iut'?'IUT · semaine n°'+w[track]:'En entreprise'}${ev?' · '+ev:''}</small></div>
+      <div class="pil ${s}">${s==='iut'?'IUT':'ENTR.'}</div></div>`;
+  });
+  h+=m?'</div>':`<div class="card" style="padding:26px;text-align:center;color:var(--txt2)">Aucun résultat</div>`;
+  document.getElementById('list').innerHTML=h;
+  document.querySelectorAll('#grid .gc,#list .wr').forEach(el=>el.onclick=()=>{tap();openWeek(+el.dataset.i)});
+}
+
+/* ================= SHEET SEMAINE ================= */
+const sheet=document.getElementById('sheet'),scrim=document.getElementById('scrim');
+function openWeek(i){
+  if(i<0||i>=WEEKS.length)return; mi=i; renderSheet();
+  sheet.classList.add('on');scrim.classList.add('on');document.body.style.overflow='hidden';
+}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');
+  sheet.style.transform='';document.body.style.overflow='';mi=-1;}
+function renderSheet(){
+  const w=WEEKS[mi],s=st(w),iutL=WEEKS.filter(x=>st(x)==='iut');
+  document.getElementById('shT').textContent=`Semaine ${w.n}`;
+  document.getElementById('shS').textContent=
+    `${fmt(dt(w.start),{weekday:'long',day:'numeric',month:'long'})} → ${fmt(add(w.start,6),{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`;
+  const nbF=[0,1,2,3,4].filter(k=>dayInfo(w,k).c==='fe').length;
+  document.getElementById('shSum').innerHTML=`
+    <div class="sbox"><small>Lieu</small><b>${s==='iut'?'🎓 IUT':'🏢 Entreprise'}</b></div>
+    ${s==='iut'?`<div class="sbox"><small>Semaine IUT</small><b>n°${w[track]} <span style="font-size:12px;color:var(--txt2)">/${iutL.length}</span></b></div>`:''}
+    <div class="sbox"><small>Travaillés</small><b>${5-nbF} / 5 j</b></div>
+    <div class="sbox"><small>Fériés</small><b>${nbF}</b></div>`;
+  document.getElementById('shDays').innerHTML=DN.map((n,k)=>{const f=dayInfo(w,k);
+    return `<div class="dr ${f.c}${f.key===TODAY?' now':''}">
+      <div class="dn"><small>${D3[k]}</small><b>${f.d.getDate()}</b></div>
+      <div class="di"><b>${f.l}</b><small>${fmt(f.d,{month:'long',year:'numeric'})}</small>
+        ${f.ev.map(e=>`<div class="ev">${e.t==='ferie'?'🎈':'📌'} ${e.l}</div>`).join('')}</div>
+      ${f.key===TODAY?'<div class="pil" style="background:var(--blue);color:#fff">AUJ.</div>':''}</div>`;}).join('');
+  document.getElementById('prevB').disabled=mi<=0;
+  document.getElementById('nextB').disabled=mi>=WEEKS.length-1;
+}
+scrim.onclick=closeSheet;
+document.getElementById('prevB').onclick=()=>{if(mi>0){tap();mi--;renderSheet()}};
+document.getElementById('nextB').onclick=()=>{if(mi<WEEKS.length-1){tap();mi++;renderSheet()}};
+/* swipe horizontal = changer de semaine */
+let sx=0,sy=0,sw=false;
+const body=document.getElementById('shBody');
+body.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;sw=false},{passive:true});
+body.addEventListener('touchmove',e=>{
+  const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;
+  if(!sw&&Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.6){sw=true;tap();
+    if(dx<0&&mi<WEEKS.length-1)mi++; else if(dx>0&&mi>0)mi--;
+    renderSheet();body.scrollTop=0;}},{passive:true});
+/* glisser la poignée vers le bas = fermer */
+let gy=0,gd=0;const grab=document.getElementById('grab');
+grab.addEventListener('touchstart',e=>{gy=e.touches[0].clientY;gd=0;sheet.classList.add('drag')},{passive:true});
+grab.addEventListener('touchmove',e=>{gd=Math.max(0,e.touches[0].clientY-gy);
+  sheet.style.transform=`translateY(${gd}px)`},{passive:true});
+grab.addEventListener('touchend',()=>{sheet.classList.remove('drag');
+  if(gd>90){closeSheet();tap();}else sheet.style.transform='';});
+
+/* ================= EXPORTS ================= */
+const pz=d=>iso(d).replace(/-/g,'');
+function dl(lines,name){
+  const b=new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//GEII2//FR','CALSCALE:GREGORIAN',...lines,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar'});
+  const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),3000);toast('Fichier .ics généré');
+}
+document.getElementById('doIcs').onclick=()=>{tap();let o=[],i=0,k=0;
+  while(i<WEEKS.length){if(st(WEEKS[i])==='iut'){let j=i;while(j+1<WEEKS.length&&st(WEEKS[j+1])==='iut')j++;
+    o.push('BEGIN:VEVENT','UID:e'+(k++)+'@geii2','SUMMARY:🎓 IUT – '+(track==='aii'?'AII':'BUT2'),
+      'DTSTART;VALUE=DATE:'+pz(dt(WEEKS[i].start)),'DTEND;VALUE=DATE:'+pz(add(WEEKS[j].start,5)),'TRANSP:TRANSPARENT','END:VEVENT');
+    i=j+1;}else i++;}
+  WEEKS.forEach(w=>evs(w).forEach(e=>o.push('BEGIN:VEVENT','UID:e'+(k++)+'@geii2','SUMMARY:'+e.l,
+    'DTSTART;VALUE=DATE:'+pz(dt(e.d)),'DTEND;VALUE=DATE:'+pz(add(e.d,1)),'END:VEVENT')));
+  dl(o,'alternance_'+track+'.ics');};
+document.getElementById('shIcs').onclick=()=>{const w=WEEKS[mi],s=st(w);tap();let o=[],k=0;
+  o.push('BEGIN:VEVENT','UID:w'+(k++)+'@geii2','SUMMARY:'+(s==='iut'?'🎓 IUT (sem. '+w[track]+')':'🏢 Entreprise'),
+    'DTSTART;VALUE=DATE:'+pz(dt(w.start)),'DTEND;VALUE=DATE:'+pz(add(w.start,5)),'TRANSP:TRANSPARENT','END:VEVENT');
+  evs(w).forEach(e=>o.push('BEGIN:VEVENT','UID:w'+(k++)+'@geii2','SUMMARY:'+e.l,
+    'DTSTART;VALUE=DATE:'+pz(dt(e.d)),'DTEND;VALUE=DATE:'+pz(add(e.d,1)),'END:VEVENT'));
+  dl(o,'semaine_'+w.n+'.ics');};
+
+function rng(w){const a=dt(w.start),b=add(w.start,4),p=n=>String(n).padStart(2,'0');
+  const ma=a.toLocaleDateString('fr-FR',{month:'short'}),mb=b.toLocaleDateString('fr-FR',{month:'short'});
+  return ma===mb?`${p(a.getDate())}–${p(b.getDate())} ${ma}`:`${p(a.getDate())} ${ma}–${p(b.getDate())} ${mb}`;}
+function pdfDoc(orient,inner,title){
+  const land=orient==='landscape';
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>${title}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>@page{size:A4 ${orient};margin:${land?'8mm':'9mm 8mm'}}
+  *{box-sizing:border-box}body{margin:0;background:#4a4f5c;font:8pt/1.25 -apple-system,Arial,sans-serif;color:#000;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tb{position:sticky;top:0;background:#111826;color:#fff;padding:12px 14px;display:flex;gap:10px;
+    align-items:center;font-size:13px;flex-wrap:wrap}
+  .tb b{font-size:14px}.tb button{margin-left:auto;background:#0A84FF;border:0;color:#fff;padding:9px 16px;border-radius:9px;font-size:13px}
+  .pg{background:#fff;width:${land?'297mm':'210mm'};margin:12px auto;padding:${land?'8mm':'9mm 8mm'};box-shadow:0 6px 26px rgba(0,0,0,.5)}
+  h1{font-size:13pt;margin:0}.hd{display:flex;align-items:flex-end;gap:8px;border-bottom:1.6pt solid #000;padding-bottom:3pt;margin-bottom:5pt}
+  .me{font-size:9pt;font-weight:700;background:#000;color:#fff;padding:1.5pt 6pt;border-radius:3pt}
+  .mt{margin-left:auto;font-size:7pt;color:#444;text-align:right}
+  .kp{display:flex;gap:6pt;margin-bottom:5pt;flex-wrap:wrap}.kp span{border:.5pt solid #999;border-radius:3pt;padding:1.5pt 6pt;font-size:7.5pt}
+  .gr{display:grid;gap:5mm;align-items:start}
+  table{width:100%;border-collapse:collapse;page-break-inside:avoid}
+  th{font-size:6.5pt;text-transform:uppercase;background:#222;color:#fff;padding:2pt 3pt;text-align:left;border:.4pt solid #222}
+  td{padding:1.4pt 3pt;border:.4pt solid #c9cfda;font-size:7.3pt}
+  tr.iut{background:#dff2e4}tr.ent{background:#fbe6ee}tr.now td{outline:1.2pt solid #000;font-weight:700}
+  td.c{text-align:center}td.w{font-weight:700;width:9%}td.d{white-space:nowrap;width:31%}td.n{font-weight:700;width:8%}
+  td.e{font-size:6.6pt;font-style:italic}tr.ms td{border-top:1pt solid #555}
+  .lg{display:flex;gap:10pt;margin-top:5pt;padding-top:3pt;border-top:.6pt solid #999;font-size:7pt;flex-wrap:wrap}
+  .lg i{display:inline-block;width:9pt;height:7pt;border:.4pt solid #888;margin-right:3pt}
+  @media print{body{background:#fff}.tb{display:none}.pg{width:auto;margin:0;padding:0;box-shadow:none}}
+  </style></head><body>
+  <div class="tb"><b>Aperçu PDF</b><span style="opacity:.7">Partager → Imprimer → pincez pour enregistrer en PDF</span>
+  <button onclick="window.print()">📄 Enregistrer</button></div><div class="pg">${inner}</div></body></html>`;
+}
+function openPdf(orient){
+  const cols=orient==='landscape'?3:2,cur=ci();
+  const list=WEEKS.map((w,i)=>({w,i}));
+  const per=Math.ceil(list.length/cols),ch=[];
+  for(let c=0;c<cols;c++)ch.push(list.slice(c*per,(c+1)*per));
+  let lm=null;
+  const row=o=>{const{w,i}=o,s=st(w),m=dt(w.start).getMonth(),ms=m!==lm;lm=m;
+    return `<tr class="${s}${i===cur?' now':''}${ms?' ms':''}"><td class="w c">${w.n}</td><td class="d">${rng(w)}</td>
+      <td class="c">${s==='iut'?'IUT':'Entr.'}</td><td class="n c">${w[track]??''}</td>
+      <td class="e">${evs(w).map(e=>e.l).join(' · ')}</td></tr>`;};
+  const head='<thead><tr><th>S</th><th>Période (lun–ven)</th><th>Lieu</th><th>N°</th><th>Événement</th></tr></thead>';
+  const iutW=WEEKS.filter(w=>st(w)==='iut');
+  const inner=`<div class="hd"><h1>CALENDRIER ALTERNANCE GEII2 · 2026‑2027</h1>
+      <span class="me">${track==='aii'?'PARCOURS AII':'BUT2'}</span>
+      <div class="mt">Édité le ${fmt(new Date(),{day:'2-digit',month:'long',year:'numeric'})}<br>Sans colonnes ESE / EME</div></div>
+    <div class="kp"><span>Semaines IUT <b>${iutW.length}</b></span><span>Entreprise <b>${WEEKS.length-iutW.length}</b></span>
+      <span>Rentrée <b>07 sept.</b></span><span>Soutenances BUT3 <b>30 août</b></span></div>
+    <div class="gr" style="grid-template-columns:repeat(${cols},1fr)">${ch.map(c=>`<table>${head}<tbody>${c.map(row).join('')}</tbody></table>`).join('')}</div>
+    <div class="lg"><span><i style="background:#dff2e4"></i>IUT</span><span><i style="background:#fbe6ee"></i>Entreprise</span>
+      <span><i style="outline:1pt solid #000;outline-offset:-1pt"></i>Semaine en cours</span>
+      <span>Samedi et dimanche non travaillés</span></div>`;
+  const w=window.open('','_blank');
+  if(!w){toast('Autorisez les pop-ups pour le PDF');return;}
+  w.document.write(pdfDoc(orient,inner,'Calendrier_GEII2_'+(track==='aii'?'AII':'BUT2')));w.document.close();
+}
+document.getElementById('doPdfP').onclick=()=>{tap();openPdf('portrait')};
+document.getElementById('doPdfL').onclick=()=>{tap();openPdf('landscape')};
+document.getElementById('shPdf').onclick=()=>{const w=WEEKS[mi],s=st(w);tap();
+  const days=DN.map((n,k)=>{const f=dayInfo(w,k);
+    return `<tr class="${f.c==='iut'?'iut':f.c==='ent'?'ent':''}"><td class="w">${n}</td>
+      <td class="d">${fmt(f.d,{day:'2-digit',month:'long',year:'numeric'})}</td><td class="c">${f.l}</td>
+      <td class="e">${f.ev.map(e=>e.l).join(' · ')}</td></tr>`;}).join('');
+  const inner=`<div class="hd"><h1>SEMAINE ${w.n} — ${s==='iut'?'IUT':'ENTREPRISE'}</h1>
+    <span class="me">${track==='aii'?'AII':'BUT2'}</span>
+    <div class="mt">${fmt(dt(w.start),{day:'2-digit',month:'long',year:'numeric'})} → ${fmt(add(w.start,6),{day:'2-digit',month:'long',year:'numeric'})}</div></div>
+    <table><thead><tr><th>Jour</th><th>Date</th><th>Statut</th><th>Événement</th></tr></thead><tbody>${days}</tbody></table>`;
+  const win=window.open('','_blank');
+  if(!win){toast('Autorisez les pop-ups pour le PDF');return;}
+  win.document.write(pdfDoc('portrait',inner,'Semaine_'+w.n));win.document.close();};
+
+/* ================= NAVIGATION ================= */
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{tap();
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===t.dataset.v));
+  document.getElementById('navT').textContent={'v-now':'Aujourd\'hui','v-cal':'Calendrier','v-more':'Réglages'}[t.dataset.v];
+  window.scrollTo(0,0);});
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{tap();filter=c.dataset.f;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));renderCal();});
+document.getElementById('q').oninput=e=>{query=e.target.value;renderCal();};
+document.querySelectorAll('[data-track]').forEach(b=>b.onclick=()=>{tap();track=b.dataset.track;
+  localStorage.setItem('trk',track);
+  document.querySelectorAll('[data-track]').forEach(x=>x.classList.toggle('on',x===b));
+  renderNow();renderCal();if(mi>=0)renderSheet();toast('Parcours : '+(track==='aii'?'AII':'BUT2'));});
+document.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{tap();const v=b.dataset.th;
+  localStorage.setItem('th',v);applyTheme(v);
+  document.querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on',x===b));});
+function applyTheme(v){if(v==='auto')document.documentElement.removeAttribute('data-force');
+  else document.documentElement.dataset.force=v;
+  document.getElementById('themeB').textContent=v==='dark'?'☀️':v==='light'?'🌙':'🌓';}
+document.getElementById('themeB').onclick=()=>{tap();
+  const cur=localStorage.getItem('th')||'auto',nx=cur==='auto'?'light':cur==='light'?'dark':'auto';
+  localStorage.setItem('th',nx);applyTheme(nx);
+  document.querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on',x.dataset.th===nx));};
+addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>18),{passive:true});
+
+/* ================= INIT ================= */
+(function(){
+  const th=localStorage.getItem('th')||'auto';applyTheme(th);
+  document.querySelectorAll('[data-th]').forEach(x=>x.classList.toggle('on',x.dataset.th===th));
+  document.querySelectorAll('[data-track]').forEach(x=>x.classList.toggle('on',x.dataset.track===track));
+  renderNow();renderCal();
+})();
+</script>
+</body>
+</html>
