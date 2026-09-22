@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>Générateur d'icône</title>
+<style>body{background:#1c1c1e;color:#fff;font:15px -apple-system,Segoe UI,sans-serif;text-align:center;padding:30px}
+canvas{border-radius:22%;box-shadow:0 10px 40px #000;width:260px;height:260px}
+button{background:#0A84FF;border:0;color:#fff;padding:12px 20px;border-radius:10px;margin:6px;font-size:15px;cursor:pointer}</style>
+</head><body>
+<h2>Icône Alternance GEII2</h2>
+<canvas id="c" width="1024" height="1024"></canvas><br>
+<button onclick="dl(180,'apple-touch-icon.png')">⬇️ apple-touch-icon.png (180)</button>
+<button onclick="dl(192,'icon-192.png')">⬇️ icon-192.png</button>
+<button onclick="dl(512,'icon-512.png')">⬇️ icon-512.png</button>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d'),S=1024;
+/* fond noir + léger reflet en haut à gauche */
+x.fillStyle='#0A0A0C';x.fillRect(0,0,S,S);
+let g=x.createLinearGradient(0,0,S*.75,S*.75);
+g.addColorStop(0,'rgba(255,255,255,.075)');g.addColorStop(.5,'rgba(255,255,255,.015)');g.addColorStop(1,'rgba(255,255,255,0)');
+x.fillStyle=g;x.fillRect(0,0,S,S);
+
+/* dégradé néon cyan → magenta → vert */
+function neon(a,b){const gr=x.createLinearGradient(a,0,b,0);
+  gr.addColorStop(0,'#22D3EE');gr.addColorStop(.34,'#C724F5');gr.addColorStop(.66,'#5CF06B');gr.addColorStop(1,'#4ADE80');return gr;}
+function glow(draw,grad,w,blur){
+  x.lineCap='round';x.lineJoin='round';x.strokeStyle=grad;x.shadowColor='#2DD4FF';
+  x.lineWidth=w;x.shadowBlur=blur;draw();x.shadowBlur=blur*.45;draw();x.shadowBlur=0;draw();}
+
+/* corps du calendrier */
+const CX=368,CY=348,CW=288,CH=292,R=52;
+glow(()=>{x.beginPath();x.moveTo(CX+R,CY);x.arcTo(CX+CW,CY,CX+CW,CY+CH,R);
+  x.arcTo(CX+CW,CY+CH,CX,CY+CH,R);x.arcTo(CX,CY+CH,CX,CY,R);x.arcTo(CX,CY,CX+CW,CY,R);x.closePath();x.stroke();},
+  neon(CX,CX+CW),19,34);
+/* barre d'en-tête */
+glow(()=>{x.beginPath();x.moveTo(CX+4,CY+84);x.lineTo(CX+CW-4,CY+84);x.stroke();},neon(CX,CX+CW),17,26);
+/* les deux anneaux */
+[440,578].forEach(px=>glow(()=>{x.beginPath();x.moveTo(px,CY-42);x.lineTo(px,CY+22);x.stroke();},neon(400,620),19,30));
+
+/* signal : créneaux numériques puis sinusoïde */
+const W=neon(190,840);
+glow(()=>{x.beginPath();
+  x.moveTo(190,512);x.lineTo(248,512);x.lineTo(248,474);x.lineTo(306,474);x.lineTo(306,512);
+  x.lineTo(346,512);x.lineTo(346,452);x.lineTo(408,452);x.lineTo(408,524);
+  x.bezierCurveTo(432,524,452,452,492,452);
+  x.bezierCurveTo(534,452,532,560,570,560);
+  x.bezierCurveTo(614,560,622,452,662,452);
+  x.bezierCurveTo(702,452,700,548,736,548);
+  x.bezierCurveTo(764,548,772,500,790,500);
+  x.lineTo(840,500);x.stroke();},W,17,32);
+
+function dl(s,n){const t=document.createElement('canvas');t.width=t.height=s;
+  const k=t.getContext('2d');k.imageSmoothingQuality='high';k.drawImage(c,0,0,s,s);
+  const a=document.createElement('a');a.href=t.toDataURL('image/png');a.download=n;a.click();}
+</script></body></html>
